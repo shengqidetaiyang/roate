@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style type="text/css">
+            *{
+                padding:0;
+                margin:0;
+            }
+            .blockr{
+                width:200px;
+                height:200px;
+                background-color:red;
+                position:relative;
+                margin:300px;
+            }
+            .bar{
+                width:30px;
+                height:30px;
+                position:absolute;
+                background-color:blue;
+                left:50%;
+                /*margin-left:-15px;*/
+                top:-100%;
+                cursor:move;
+                opacity:0;
+            }
+            .pbox{
+                width:70px;
+                height:30px;
+                text-align: center;
+                line-height:30px;
+                position:absolute;
+                color:red;
+                right:0;
+                /*margin-left:-15px;*/
+                top:-100%;
+                cursor:move;
+                font-size:20px;
+
+                               
+            }
+        </style>
+    </head>
+    <body>
+    <div class="blockr">
+        <div class="bar"></div>
+        <div class="pbox">0°</div>
+    </div>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript">
+    $(".bar").css({
+        left:$(".blockr").width()*0.5 - $(".bar").width()*0.5,
+        opacity:1
+    })
+    // var x1 = $(".block").offset().left + $(".block").width()*0.5;
+    // var y1 = $(".block").offset().top + $(".block").height()*0.5;
+        var x2 = $(".blockr").offset().left + $(".blockr").width()*0.5;
+        var y2 = $(".blockr").offset().top + $(".blockr").height()*0.5;
+
+    $(".bar").bind("mousedown",function(e){
+        var e = e || e.event;
+
+
+        var ox = e.clientX - $(".bar").offset().left;
+        var oy = e.clientY - $(".bar").offset().top;
+        var bposition = $(".blockr").offset();
+        $(document).bind("mousemove",function(e){
+            var e = e || e.event;
+        var x1 = parseInt(e.clientX);
+        var y1 = parseInt(e.clientY); 
+            // $(".bar").css({
+            //     left: e.clientX - ox - bposition.left,
+            //     top: e.clientY - oy - bposition.top
+            // })
+
+        var q = (x2-x1)/(y2-y1);
+        var ti = Math.atan(q)*180/Math.PI;
+        if(y2 >= y1){
+          ti = -ti; 
+        }
+        else if(y2 < y1){
+          ti = 180 - ti;      
+        }
+        console.log(ti);
+        tii = ti;
+        if(tii > 180){
+            tii = tii - 360;
+        }
+        var ttii = parseInt(tii)
+        console.log(ttii);
+
+        $(".blockr").css({
+            transform:"rotate(" + ti + "deg)"
+        }) 
+        $(".pbox").css({
+            transform:"rotate(" + -ti + "deg)"
+        })
+        $(".pbox").html(ttii + "°");
+        })
+        $(document).bind("mouseup",function(){
+            $(document).unbind("mousemove");
+        })
+    })
+    </script>
+    </body>
+</html>
